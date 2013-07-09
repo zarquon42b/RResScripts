@@ -1,3 +1,11 @@
+#' get harmonics
+#'
+#' get harmonvics
+#'
+#' @param x
+#' @param nh integer (vector): number of harmonics to extract
+#' @return list with harmonics (an, bn, cn, dn)
+#' @export getHarm
 getHarm <- function(x,nh=NULL)
   {
     an <- grep("A",names(x))
@@ -14,7 +22,14 @@ getHarm <- function(x,nh=NULL)
       }
     return(list(an=x[an],bn=x[bn],cn=x[cn],dn=x[dn]))
   }
-
+#' convert harmonics to 2D-coordinates
+#'
+#' convert harmonics to 2D-coordinates
+#' @param x vector, matrix or Coe object
+#' @param nh integer (vector): number of harmonics to use
+#' @param nb.pts number of coordinats
+#' @return matrix with 2D coordinates
+#' @export ef2coo
 ef2coo <- function(x,nh=NULL,nb.pts=300)
   {
     if (class(x) == "Coe")

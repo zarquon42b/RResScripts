@@ -1,0 +1,23 @@
+Package: researchscripts
+Type: Package
+Title: collection of scripts
+Version: 0.3
+Date: 2013-06-27
+Author: Stefan Schlager
+Maintainer: Stefan Schlager <zarquon42@gmail.com>
+Description: helperfunctions
+SystemRequirements: 
+Depends:
+    R (>= 2.14.0),
+    ggplot2,
+    Momocs,
+    XML
+License: GPL-2
+LazyLoad: yes
+Collate:
+    'EFAhelper.r'
+    'ggPCvsVar.r'
+    'multiplot.r'
+    'read.matlab.r'
+    'triangvol.r'
+    'xmlhelperfun.r'
