@@ -8,8 +8,11 @@
 #' @param group grouping variable
 #' @param layout layout matrix
 #' @param legend.title custom legend title
+#' @export ggMatvsVar
 ggMatvsVar <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, legend.title=NULL)
 {
+    require(ggplot2)
+    require(grid)
     xname <- deparse(substitute(var))
     dims <- ncol(PCs)
     if (is.null(legend.title) && ! is.null(group))

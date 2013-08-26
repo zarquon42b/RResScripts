@@ -5,7 +5,7 @@
   getHarm(x, nh = NULL)
 }
 \arguments{
-  \item{x}{}
+  \item{x}{\code{\link{Coe}} object}
 
   \item{nh}{integer (vector): number of harmonics to
   extract}
