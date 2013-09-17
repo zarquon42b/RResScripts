@@ -1,0 +1,17 @@
+\name{checkDir}
+\alias{checkDir}
+\title{get direction of closed 2D-outline coordinates}
+\usage{
+  checkDir(coords)
+}
+\arguments{
+  \item{coords}{k x 2 matrix containing 2D-coordinates}
+}
+\value{
+  sign of the angle
+}
+\description{
+  get direction of closed outline coordinates by comparing
+  signed angles between first and k/4 coordinate
+}
+

@@ -25,3 +25,7 @@ Collate:
     'xmlhelperfun.r'
     'gridCube.r'
     'icp.matrix.r'
+    'crestlines.r'
+    'map.mesh.r'
+    'spinimage.r'
+    'spinmap.r'
