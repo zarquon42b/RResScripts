@@ -1,29 +1,30 @@
+#' plot Curves generated wiht setCurvature
+#'
+#'  plot Curves generated wiht setCurvature
+#' @param curve object read by readCurves
+#' @param text name curves
+#' @param color color curves
+#' @export plotCurves
 plotCurves <- function(curve,text=FALSE,color="rainbow")
   {
     limits <- as.integer(levels((as.factor(curve$id))))
     if (color !="rainbow")
-      {points3d(curve$vertices,col=color)
-     }
-    if (text || color == "rainbow")
-      {
-        for (i in limits)
-          {
-            if (color == "rainbow")
-              {
+        points3d(curve$vertices,col=color)
+     
+    if (text || color == "rainbow") {
+        for (i in limits) {
+            if (color == "rainbow") {
                 col <- i+1
                 points3d(curve$vertices[which(curve$id==i),],col=col)
-              }
-            else
-              {col <- color
-             }
+            } else
+                col <- color
             if (text)
-              {
                 text3d(apply(curve$vertices[which(curve$id==i),],2,mean),texts=paste(i),col=col)
-              }
-          }
-      }
-  }
+        }
+    }
+}
 
+#' @export readCurves
 readCurves <- function(x)
   {
     tmp <- as.numeric(readLines(x,n=1))
@@ -36,54 +37,49 @@ readCurves <- function(x)
 
     n <- as.integer(vertices[,4])
     vertices <- vertices[,1:3]
-
+    
     return(list(vertices=vertices,id=n))
   }
-
+#' @export mesh2ply2
 mesh2ply2<-function(x,filename="default",curvature=TRUE,neighbour=2)
 { 
-  if (is.matrix(x))
-    {x<-list(vb=x)}
+  if (is.matrix(x)) {
+      x<-list(vb=x)
+  }
   filename<-paste(filename,".ply2",sep="")
   vert<-x$vb[1:3,]
   vert<-round(vert,digits=6)
-  if (!is.null(x$it))
-    {face<-x$it-1
-     fd<-3
-     fn<-dim(face)[2]
-   }
-  else 
-    {fn<-0
-   } 
+  if (!is.null(x$it)) {
+      face<-x$it-1
+      fd<-3
+      fn<-dim(face)[2]
+  } else {
+      fn<-0
+  } 
   vert.all<-vert
   vn<-dim(vert)[2]
   vn.all<-3
   texfile<-x$TextureFile
   header <- c(vn,fn)
-  if (curvature)
-    {header <- c(vn,fn,neighbour,1)
-     faceraw <- face
-   }
-  else
-    {
+  if (curvature) {
+      header <- c(vn,fn,neighbour,1)
+      faceraw <- face
+  } else {
       faceraw<-rbind(fd,face)
-    }
-### start writing to file ###
+  }
+  ## start writing to file ###
    
-### write vertex infos to header ###
-    
+  ##write vertex infos to header ###
   write.table(header,file=filename,append=FALSE,sep="",quote = FALSE, row.names = FALSE, col.names = FALSE, na = "")                                       
   
-### write face infos and texture infos to header and finish ### 
-
-### write vertices ###
+  ## write face infos and texture infos to header and finish ### 
+  ## write vertices ###
   write.table(format(as.vector(vert.all),scientific=F,trim=T),file=filename,sep=" ",append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE, na = "") 
   
   
-### write face ### 
+  ##write face ### 
                                        
   write.table(format(as.vector(faceraw),scientific=F,trim=T),file=filename,sep=" ",append=TRUE,quote = FALSE, row.names = FALSE, col.names = FALSE, na = "")   
-  
 }
 
 file2ply2 <- function(filein,fileout,curvature=TRUE,neighbour=2)
@@ -91,3 +87,19 @@ file2ply2 <- function(filein,fileout,curvature=TRUE,neighbour=2)
     tmpmesh <- file2mesh(filein)
     mesh2ply2(tmpmesh,filename=fileout,curvature=curvature,neighbour=neighbour)
   }
+#' @export getCurvature
+getCurvature <- function(mesh, neighbour =2, fileout="curvemeshTmp")
+    {
+        if (is.character(mesh))
+            file2ply2(mesh, neighbour=neighbour,fileout=fileout)
+        else
+            mesh2ply2(mesh, neighbour=neighbour, fileout=fileout)
+
+        cmd <- paste("setCurvature ", fileout,".ply2 ",fileout, ".txt",sep="")
+        system(cmd)
+        out <- list()
+        out$ravines <- readCurves("ravines.txt")
+        out$ridges <- readCurves("ridges.txt")
+        return(out)
+    }
+        
