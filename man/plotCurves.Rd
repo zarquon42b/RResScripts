@@ -2,7 +2,7 @@
 \alias{plotCurves}
 \title{plot Curves generated wiht setCurvature}
 \usage{
-  plotCurves(curve, text = FALSE, color = "rainbow")
+plotCurves(curve, text = FALSE, color = "rainbow")
 }
 \arguments{
   \item{curve}{object read by readCurves}
@@ -12,6 +12,6 @@
   \item{color}{color curves}
 }
 \description{
-  plot Curves generated wiht setCurvature
+plot Curves generated wiht setCurvature
 }
 

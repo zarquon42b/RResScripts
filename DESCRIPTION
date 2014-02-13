@@ -13,20 +13,7 @@ Imports:
     ggplot2,
     grid,
     Momocs,
+    Morpho,
     XML
 License: GPL-2
 LazyLoad: yes
-Collate:
-    'EFAhelper.r'
-    'ggPCvsVar.r'
-    'multiplot.r'
-    'read.matlab.r'
-    'triangvol.r'
-    'xmlhelperfun.r'
-    'gridCube.r'
-    'icp.matrix.r'
-    'crestlines.r'
-    'map.mesh.r'
-    'spinimage.r'
-    'spinmap.r'
-    'get.obj.size.r'

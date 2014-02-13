@@ -2,8 +2,7 @@
 \alias{icp.matrix}
 \title{ICP matching for two matrices}
 \usage{
-  icp.matrix(x, y, maxdist = 1, weighting = TRUE,
-    iterations = 3)
+icp.matrix(x, y, maxdist = 1, weighting = TRUE, iterations = 3)
 }
 \arguments{
   \item{x}{matrix}
@@ -18,11 +17,10 @@
   \item{iterations}{integer: iterations to run}
 }
 \value{
-  returns scaled, translated and rotated version of
-  \code{x}
+returns scaled, translated and rotated version of \code{x}
 }
 \description{
-  ICP matching for two matrices
+ICP matching for two matrices
 }
 \examples{
 require(Morpho)

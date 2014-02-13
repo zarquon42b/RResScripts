@@ -2,7 +2,7 @@
 \alias{getHarm}
 \title{get harmonics}
 \usage{
-  getHarm(x, nh = NULL)
+getHarm(x, nh = NULL)
 }
 \arguments{
   \item{x}{\code{\link{Coe}} object}
@@ -11,9 +11,9 @@
   extract}
 }
 \value{
-  list with harmonics (an, bn, cn, dn)
+list with harmonics (an, bn, cn, dn)
 }
 \description{
-  get harmonvics
+get harmonvics
 }
 

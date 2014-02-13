@@ -93,7 +93,7 @@ getCurvature <- function(mesh, neighbour =2, fileout="curvemeshTmp")
         if (is.character(mesh))
             file2ply2(mesh, neighbour=neighbour,fileout=fileout)
         else
-            mesh2ply2(mesh, neighbour=neighbour, fileout=fileout)
+            mesh2ply2(mesh, neighbour=neighbour, filename=fileout)
 
         cmd <- paste("setCurvature ", fileout,".ply2 ",fileout, ".txt",sep="")
         system(cmd)
