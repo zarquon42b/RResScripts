@@ -1,5 +1,6 @@
 export(checkDir)
 export(checkDirCoo)
+export(cholMaha)
 export(ef2coo)
 export(fixitall)
 export(get.obj.size)
