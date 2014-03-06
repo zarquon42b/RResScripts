@@ -1,3 +1,6 @@
+#' @export
+#' @useDynLib researchscripts
+
 spinimage <- function(mesh,O,bs,rho=pi/2,resA=NULL,resB=NULL)
   {
    
@@ -87,6 +90,7 @@ spinimage <- function(mesh,O,bs,rho=pi/2,resA=NULL,resB=NULL)
     out <- .Fortran("spinimage",Sp,ij,dim(ij)[1],ab,imax,jmax,bs)[[1]]
     return(list(Sp=out,S0=S0,rm=rm,ij=ij,ab=ab))
   }
+#' @export
 spinimageLM <- function(mat,mesh,bs,rho=pi/2,resA=NULL,resB=NULL)
   {
     i <- NULL
