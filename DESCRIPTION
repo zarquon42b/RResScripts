@@ -15,5 +15,6 @@ Imports:
     Momocs,
     Morpho,
     XML
+LinkingTo: Rcpp, RcppArmadillo (>= 0.4)
 License: GPL-2
 LazyLoad: yes

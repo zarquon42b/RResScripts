@@ -1,17 +1,15 @@
 #' @export
+#' @importFrom Rcpp evalCpp
 #' @useDynLib researchscripts
 
-spinimage <- function(mesh,O,bs,rho=pi/2,resA=NULL,resB=NULL)
-  {
-   
-    ### tol=max tolerance for beta
+spinimage <- function(mesh,O,bs,rho=pi/2,resA=NULL,resB=NULL) {  
+### tol=max tolerance for beta
     angcomp <- NULL
     VB <- mesh$vb[1:3,]
     normals <- mesh$normals[1:3,]
     dimvb <- dim(VB)[2]
     comp <- normals[1:3,O]
-    if (!is.null(mesh$it))
-      {
+    if (!is.null(mesh$it)) {
         reso <- meshres(mesh)
         bs <- bs*reso
       }
@@ -43,17 +41,14 @@ spinimage <- function(mesh,O,bs,rho=pi/2,resA=NULL,resB=NULL)
     S0 <- .Fortran("spinmap",S0,VB,p,n,dimvb)[[1]]
     
 ### create spinimage
-    if (is.null(resB))
-      {
+    if (is.null(resB)) {
         W <- mdist
         resB <- ceiling((2*W/bs)+1)        
-     }
-    else
-      {
+    } else {
         W <-((resB-2)*bs)
         bsmall <- which(abs(S0[,2]) <= W/2)
         S0 <- S0[bsmall,]
-      }
+    }
     if (is.null(resA))
       {
         resA <- ceiling((mdist/bs)+1)
@@ -100,7 +95,7 @@ spinimageLM <- function(mat,mesh,bs,rho=pi/2,resA=NULL,resB=NULL)
     nlm <- dim(mat)[1]
     out <- list()
     tmpmesh <- mesh
-    tmpmesh$vb <- cbind(tmpmesh$vb,rbind(pro$vb,1))
+    tmpmesh$vb <- cbind(tmpmesh$vb,pro$vb)
     tmpmesh$normals <- cbind(tmpmesh$normals,pro$normals)
     mcspin <- function(x)
       {

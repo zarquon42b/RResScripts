@@ -8,8 +8,11 @@
 #' @param group grouping variable
 #' @param layout layout matrix
 #' @param legend.title custom legend title
+#' @param pt.size point size
+#' @param lwd line width of regression line
+#' @rdname ggMatvsVar
 #' @export ggMatvsVar
-ggMatvsVar <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, legend.title=NULL)
+ggMatvsVar <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, legend.title=NULL,pt.size=1)
 {
     require(ggplot2)
     require(grid)
@@ -28,12 +31,14 @@ ggMatvsVar <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, leg
             print((
                 qplot(x=var,y=PCs[,i], geom="line",group=group,colour=group)
                 + labs(colour=legend.title,linetype=legend.title,shape=legend.title)
-                + geom_point()+ylab(colnames(PCs)[i])
+                + geom_point(size=pt.size)+ylab(colnames(PCs)[i])
                 + xlab(xlab)
                 ), vp = viewport(layout.pos.row = matchidx$row, layout.pos.col = matchidx$col))
         }
 }
-ggMatvsVar2 <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, legend.title=NULL)
+#' @rdname ggMatvsVar
+#' @export
+ggMatvsVar2 <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, legend.title=NULL,pt.size=1,lwd=1)
 {
     require(ggplot2)
     require(grid)
@@ -52,8 +57,8 @@ ggMatvsVar2 <- function(PCs, var, xlab=xname,ncol=2, group=NULL, layout=NULL, le
             print((
                 qplot(x=var,y=PCs[,i], group=group,colour=group)
                 + labs(colour=legend.title,linetype=legend.title,shape=legend.title)
-                + geom_smooth(method=lm) 
-                + geom_point()+ylab(colnames(PCs)[i])
+                + geom_smooth(method=lm,size=lwd) 
+                + geom_point(size=pt.size)+ylab(colnames(PCs)[i])
                 + xlab(xlab)
                 ), vp = viewport(layout.pos.row = matchidx$row, layout.pos.col = matchidx$col))
         }
