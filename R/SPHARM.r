@@ -3,7 +3,7 @@
 #'
 #' A simple wrapper for the command line tools of SPHARM-PDM, starting from an object of class mesh3d
 #' @export
-spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NULL,spacing=rep(1,3),outfolder="./",iter=100, subdivLevel=20,GenArgs=NULL,ParaArgs=NULL) {
+spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NULL,spacing=rep(1,3),outfolder="./",iter=100, subdivLevel=20,GenArgs=NULL,ParaArgs=NULL,readvtk=TRUE) {
     outimage <- paste(imagename,imagetype,sep=".")
     if (! require(RvtkStatismo))
         stop("please install RvtkStatismo from https://github.com/zarquon42b/RvtkStatismo")
@@ -24,6 +24,13 @@ spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NU
         flipTemplate <- paste("--flipTemplate", flipTemplate,"--flipTemplateOn")
     cmd <- paste(cmd,"ParaToSPHARMMeshCLP --subdivLevel", subdivLevel, flipTemplate,ParaArgs,paraname, surfname, paste0(outfolder,"/",imagename,"_"))
     system(cmd)
+    if (readvtk) {
+        out <- list()
+        out$SPHARM_ellalign <- read.vtk(paste0(outfolder,"/",imagename,"_SPHARM_ellalign.vtk"))
+        out$SPHARM <- read.vtk(paste0(outfolder,"/",imagename,"_SPHARM.vtk"))
+        return(out)
+    }
+        
 }
 
 #' a wrapper for ParaToSPHARMMeshCLP
@@ -49,6 +56,7 @@ read.coef <- function(x) {
     rawlist <- paste((unlist(rawlist)[-1]),collapse = "")
     rawlist <- as.numeric(unlist(strsplit(rawlist,",")))
     out <- matrix(rawlist,nrowC,length(rawlist)/nrowC,byrow = TRUE)
+    cat(paste0("\n   Degree of SPHARMs = ", sqrt(nrowC)-1,"\n\n"))
     return(out)
 }
 
