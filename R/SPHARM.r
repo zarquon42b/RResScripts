@@ -19,6 +19,7 @@ spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NU
     dir.create(outfolder, showWarnings = F) 
     paraname <- paste0("parasurf/",imagename,"_para.vtk")
     surfname <- paste0("parasurf/",imagename,"_surf.vtk")
+    
     cmd <- paste(cmd,"GenParaMeshCLP --label 1 --iter",iter,GenArgs,outimage,paraname,surfname, "&&")
     if (! is.null(flipTemplate))
         flipTemplate <- paste("--flipTemplate", flipTemplate,"--flipTemplateOn")
@@ -35,13 +36,22 @@ spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NU
 
 #' a wrapper for ParaToSPHARMMeshCLP
 #' @export
-spharmParaToMesh <- function(paraname, surfname,args=NULL,outname="default_",helpargs=FALSE) {
+spharmParaToMesh <- function(paraname, surfname,args=NULL,outname="default_",helpargs=FALSE,readvtk=TRUE) {
+    if(nargs() == 0)
+        helpargs <- T
     if (helpargs)
         system("ParaToSPHARMMeshCLP -h")
     else {
         cmd <- paste("ParaToSPHARMMeshCLP",paraname, surfname,args,outname)
         system(cmd)
     }
+    if (readvtk) {
+        out <- list()
+        out$SPHARM_ellalign <- read.vtk(paste0(outname,"SPHARM_ellalign.vtk"))
+        out$SPHARM <- read.vtk(paste0(outname,"SPHARM.vtk"))
+        return(out)
+    }
+        
 }
 
 #' read SPHARM coef files
