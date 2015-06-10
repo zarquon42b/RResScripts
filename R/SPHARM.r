@@ -3,32 +3,35 @@
 #'
 #' A simple wrapper for the command line tools of SPHARM-PDM, starting from an object of class mesh3d
 #' @export
-spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NULL,spacing=rep(1,3),outfolder="./",iter=100, subdivLevel=20,GenArgs=NULL,ParaArgs=NULL,readvtk=TRUE) {
+spharmCompute <- function(x,imagename,imagetype="mha",clean=TRUE,flipTemplate=NULL,spacing=rep(1,3),outfolder="./",iter=100, subdivLevel=20,GenArgs=NULL,ParaArgs=NULL,readvtk=TRUE,silent=FALSE) {
     outimage <- paste(imagename,imagetype,sep=".")
     if (! require(RvtkStatismo))
         stop("please install RvtkStatismo from https://github.com/zarquon42b/RvtkStatismo")
     vtkMesh2Image(x,spacing=spacing, filename = outimage, col=1)
-    
+    pref <- NULL
+    if (silent)
+        pref <- " > /dev/null"
     cmd <- ""
     if (clean) {
         imclean <- paste0(imagename,"_clean.mha")
-        cmd <- paste(cmd,"SegPostProcessCLP",outimage, imclean,"&&")
+        cmd <- paste(cmd,"SegPostProcessCLP",outimage, imclean,pref,"&&")
         outimage <- imclean
     }
     dir.create("parasurf",showWarnings = F)
     dir.create(outfolder, showWarnings = F) 
     paraname <- paste0("parasurf/",imagename,"_para.vtk")
     surfname <- paste0("parasurf/",imagename,"_surf.vtk")
-    
-    cmd <- paste(cmd,"GenParaMeshCLP --label 1 --iter",iter,GenArgs,outimage,paraname,surfname, "&&")
+   
+    cmd <- paste(cmd,"GenParaMeshCLP --label 1 --iter",iter,GenArgs,outimage,paraname,surfname,pref, "&&")
     if (! is.null(flipTemplate))
         flipTemplate <- paste("--flipTemplate", flipTemplate,"--flipTemplateOn")
-    cmd <- paste(cmd,"ParaToSPHARMMeshCLP --subdivLevel", subdivLevel, flipTemplate,ParaArgs,paraname, surfname, paste0(outfolder,"/",imagename,"_"))
-    system(cmd)
+    cmd <- paste(cmd,"ParaToSPHARMMeshCLP --subdivLevel", subdivLevel, flipTemplate,ParaArgs,paraname, surfname, paste0(outfolder,"/",imagename,"_"),pref)
+    system(cmd,ignore.stdout=silent,ignore.stderr=silent)
     if (readvtk) {
         out <- list()
         out$SPHARM_ellalign <- read.vtk(paste0(outfolder,"/",imagename,"_SPHARM_ellalign.vtk"))
         out$SPHARM <- read.vtk(paste0(outfolder,"/",imagename,"_SPHARM.vtk"))
+        
         return(out)
     }
         
