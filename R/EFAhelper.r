@@ -155,9 +155,9 @@ normEFA <- function(efa,output="size") {
     return(out)
 }
 
-#' set starting pointi n a list o outlines
+#' set starting point in a list of outlines
 #'
-#' set starting pointi n a list o outlines
+#' set starting point in a list of outlines
 #' @param x list of coordinate matrices
 #' @return a list of coordinates close to the starting point
 setLM <- function(x) {
