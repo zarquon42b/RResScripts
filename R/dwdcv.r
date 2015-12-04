@@ -16,6 +16,11 @@ dwdcv <- function(x,y,...) {
         out <- predict.kerndwd(dwdtmp,x=xtmp,newx=x[i,,drop=FALSE],...)
         return(out)
     }
+    
     allout <- unlist(parallel::mclapply(1:n,cvfun))
+    print(table(allout,y))
+    print(prop.table(table(allout,y),1)*100)
+    return(allout)
+    
 }
     
